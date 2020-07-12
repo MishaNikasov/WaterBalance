@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item
+
+        android:iconTint="@color/white"
+        android:id="@+id/mainFragment"
+        android:icon="@drawable/ic_water_bw"
+        android:title="Home" />
+
+    <item android:title="Statistic"
+        android:iconTint="@color/white"
+        android:id="@+id/statisticFragment"
+        android:icon="@drawable/ic_stat" />
+
+    <item
+        android:iconTint="@color/white"
+        android:id="@+id/settingsFragment"
+        android:icon="@drawable/ic_settings"
+        android:title="Settings" />
+</menu>

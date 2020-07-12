@@ -1,3 +1,15 @@
 <resources>
     <string name="app_name">WaterBalance</string>
+
+    <string name="amount_of_water">Amount of water</string>
+    <string name="left">LEFT</string>
+    <string name="goal">GOAL</string>
+    <string name="intake">INTAKE</string>
+
+    <string-array name="amounts_of_water">
+        <item>300 ml</item>
+        <item>400 ml</item>
+        <item>500 ml</item>
+        <item>600 ml</item>
+    </string-array>
 </resources>

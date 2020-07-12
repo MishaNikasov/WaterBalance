@@ -7,4 +7,12 @@
         android:id="@+id/mainFragment"
         android:name="com.nikasov.waterbalance.ui.fragment.main.MainFragment"
         android:label="MainFragment" />
+    <fragment
+        android:id="@+id/settingsFragment"
+        android:name="com.nikasov.waterbalance.ui.fragment.settings.SettingsFragment"
+        android:label="SettingsFragment" />
+    <fragment
+        android:id="@+id/statisticFragment"
+        android:name="com.nikasov.waterbalance.ui.fragment.statistic.StatisticFragment"
+        android:label="StatisticFragment" />
 </navigation>
