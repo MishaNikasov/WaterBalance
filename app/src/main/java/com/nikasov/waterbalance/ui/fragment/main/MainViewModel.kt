@@ -13,7 +13,7 @@ import java.util.*
 
 class MainViewModel @ViewModelInject constructor (
     private val waterIntakesRepository: WaterIntakesRepository,
-    private val prefs: Prefs
+    prefs: Prefs
 ) : ViewModel() {
 
     private val currentDate = Calendar.getInstance().time

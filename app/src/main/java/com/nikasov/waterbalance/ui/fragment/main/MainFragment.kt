@@ -45,10 +45,6 @@ class MainFragment : Fragment(R.layout.fragment_main) {
 
     private fun addWaterIntake() {
         viewModel.addWaterIntake()
-        val animator = ObjectAnimator.ofInt(circularProgressBar, "progress", 0, viewModel.goal)
-        animator.interpolator = DecelerateInterpolator()
-        animator.duration = 500
-        animator.start()
     }
 
     private fun initProgress() {
@@ -71,6 +67,7 @@ class MainFragment : Fragment(R.layout.fragment_main) {
     }
 
     private fun updateProgress(list : List<WaterIntake>) {
+
         var progress = 0
         list.forEach { waterIntake ->
             progress += waterIntake.amount
@@ -78,13 +75,11 @@ class MainFragment : Fragment(R.layout.fragment_main) {
 
         intakeValue.text = "$progress"
 
-        circularProgressBar.progress =
-            if (progress >= viewModel.goal) {
-                circularProgressBar.progressMax
-            } else {
-                progress.toFloat()
-            }
-
+        if (progress >= viewModel.goal) {
+            circularProgressBar.progress = circularProgressBar.progressMax
+        } else {
+            circularProgressBar.setProgressWithAnimation(progress.toFloat(), 1000)
+        }
 
         val howMuchStr =
             if (viewModel.goal - progress <= 0) {
@@ -93,6 +88,9 @@ class MainFragment : Fragment(R.layout.fragment_main) {
                 "${viewModel.goal - progress}"
             }
 
+        val currentAmountPercent = "${((progress.toFloat()/viewModel.goal.toFloat())*100).toInt()}%"
+
+        percentTxt.text = currentAmountPercent.toString()
         howMuchValue.text = howMuchStr
     }
 

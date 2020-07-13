@@ -8,6 +8,9 @@ import androidx.recyclerview.widget.AsyncListDiffer
 import androidx.recyclerview.widget.DiffUtil
 import com.nikasov.waterbalance.R
 import com.nikasov.waterbalance.data.intake.WaterIntake
+import kotlinx.android.synthetic.main.item_water_intake.view.*
+import java.text.SimpleDateFormat
+import java.util.*
 
 class WaterIntakeAdapter(private val interaction: Interaction? = null) :
     RecyclerView.Adapter<RecyclerView.ViewHolder>() {
@@ -61,6 +64,12 @@ class WaterIntakeAdapter(private val interaction: Interaction? = null) :
             itemView.setOnClickListener {
                 interaction?.onItemSelected(adapterPosition, item)
             }
+
+            val formatter = SimpleDateFormat("HH:mm", Locale.getDefault())
+            val time = formatter.format(item.date)
+            itemView.time.text = time
+
+            itemView.amount.text = item.amount.toString()
         }
     }
 
