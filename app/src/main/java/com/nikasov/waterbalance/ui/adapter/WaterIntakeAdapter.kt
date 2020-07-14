@@ -22,7 +22,7 @@ class WaterIntakeAdapter(private val interaction: Interaction? = null) :
         }
 
         override fun areContentsTheSame(oldItem: WaterIntake, newItem: WaterIntake): Boolean {
-            return oldItem.date == newItem.date
+            return oldItem.day == newItem.day
         }
 
     }
@@ -45,7 +45,7 @@ class WaterIntakeAdapter(private val interaction: Interaction? = null) :
             }
         }
     }
-
+//todo: сделать сплэшш текущую колво воды таб лейаут 
     override fun getItemCount(): Int {
         return differ.currentList.size
     }
@@ -64,12 +64,11 @@ class WaterIntakeAdapter(private val interaction: Interaction? = null) :
             itemView.setOnClickListener {
                 interaction?.onItemSelected(adapterPosition, item)
             }
-
             val formatter = SimpleDateFormat("HH:mm", Locale.getDefault())
-            val time = formatter.format(item.date)
+            val time = formatter.format(item.time)
             itemView.time.text = time
-
-            itemView.amount.text = item.amount.toString()
+            val amount = "${item.amount} ml"
+            itemView.amount.text = amount
         }
     }
 

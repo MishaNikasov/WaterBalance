@@ -8,25 +8,40 @@ import androidx.lifecycle.viewModelScope
 import com.nikasov.waterbalance.common.Prefs
 import com.nikasov.waterbalance.data.intake.WaterIntake
 import com.nikasov.waterbalance.data.repository.WaterIntakesRepository
+import com.nikasov.waterbalance.utils.DateUtils
 import kotlinx.coroutines.launch
 import java.util.*
 
 class MainViewModel @ViewModelInject constructor (
     private val waterIntakesRepository: WaterIntakesRepository,
-    prefs: Prefs
+    private val prefs: Prefs
 ) : ViewModel() {
 
-    private val currentDate = Calendar.getInstance().time
     val goal = prefs.loadGoal()
+    val currentWaterIntakeAmount = MutableLiveData(prefs.loadCurrentWaterIntake())
 
-    val waterIntakes: LiveData<List<WaterIntake>> = waterIntakesRepository.getAllWaterIntakes()
+    val waterIntakes: LiveData<List<WaterIntake>> = waterIntakesRepository.getWaterIntakesByDAte(getCurrentDay())
+
+    fun saveCurrentIntake(amount: Int) {
+        prefs.saveCurrentWaterIntakeAmount(amount)
+        currentWaterIntakeAmount.postValue(prefs.loadCurrentWaterIntake())
+    }
+
+    private fun getCurrentTime() : Date {
+        return Calendar.getInstance().time
+    }
+
+    private fun getCurrentDay() : Date {
+        return DateUtils.getDayByDate(Calendar.getInstance().time)
+    }
 
     fun addWaterIntake() {
         viewModelScope.launch {
             waterIntakesRepository.insertWaterIntake(
                 WaterIntake(
-                    currentDate,
-                    50
+                    getCurrentDay(),
+                    getCurrentTime(),
+                    currentWaterIntakeAmount.value!!
                 )
             )
         }

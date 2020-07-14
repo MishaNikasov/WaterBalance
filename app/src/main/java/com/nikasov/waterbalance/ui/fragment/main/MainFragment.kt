@@ -1,9 +1,7 @@
 package com.nikasov.waterbalance.ui.fragment.main
 
-import android.animation.ObjectAnimator
 import android.os.Bundle
 import android.view.View
-import android.view.animation.DecelerateInterpolator
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
@@ -14,7 +12,6 @@ import com.nikasov.waterbalance.ui.adapter.WaterIntakeAdapter
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.android.synthetic.main.fragment_main.*
 import timber.log.Timber
-
 
 @AndroidEntryPoint
 class MainFragment : Fragment(R.layout.fragment_main) {
@@ -53,6 +50,10 @@ class MainFragment : Fragment(R.layout.fragment_main) {
             val goalTxt = "$goal ml"
             goalValue.text = goalTxt
         }
+        viewModel.currentWaterIntakeAmount.observe(viewLifecycleOwner, Observer { amount ->
+            val amountTxt = "$amount ml"
+            nextAmount.text = amountTxt
+        })
     }
 
     private fun initWaterIntakesList() {
@@ -72,8 +73,8 @@ class MainFragment : Fragment(R.layout.fragment_main) {
         list.forEach { waterIntake ->
             progress += waterIntake.amount
         }
-
-        intakeValue.text = "$progress"
+        val intake = "$progress ml"
+        intakeValue.text = intake
 
         if (progress >= viewModel.goal) {
             circularProgressBar.progress = circularProgressBar.progressMax
@@ -85,12 +86,12 @@ class MainFragment : Fragment(R.layout.fragment_main) {
             if (viewModel.goal - progress <= 0) {
                 "Well done!"
             } else {
-                "${viewModel.goal - progress}"
+                "${viewModel.goal - progress} ml"
             }
 
         val currentAmountPercent = "${((progress.toFloat()/viewModel.goal.toFloat())*100).toInt()}%"
 
-        percentTxt.text = currentAmountPercent.toString()
+        percentTxt.text = currentAmountPercent
         howMuchValue.text = howMuchStr
     }
 
@@ -99,7 +100,10 @@ class MainFragment : Fragment(R.layout.fragment_main) {
             .setTitle(resources.getString(R.string.amount_of_water))
             .setItems(resources.getStringArray(R.array.amounts_of_water)) { dialog, which ->
                 when (which) {
-                    1 -> Timber.d(which.toString())
+                    0 -> viewModel.saveCurrentIntake(300)
+                    1 -> viewModel.saveCurrentIntake(400)
+                    2 -> viewModel.saveCurrentIntake(500)
+                    3 -> viewModel.saveCurrentIntake(600)
                 }
             }
     }

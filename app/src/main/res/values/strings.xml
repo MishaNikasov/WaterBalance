@@ -6,10 +6,11 @@
     <string name="goal">GOAL</string>
     <string name="intake">INTAKE</string>
 
-    <string-array name="amounts_of_water">
-        <item>300 ml</item>
-        <item>400 ml</item>
-        <item>500 ml</item>
-        <item>600 ml</item>
-    </string-array>
+    <!-- User -->
+    <string name="user_header">User</string>
+    <string name="goal_header">Daily goal</string>
+
+    <string name="weight_title">Weight</string>
+    <string name="sex_title">Sex</string>
+
 </resources>

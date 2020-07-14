@@ -7,9 +7,10 @@ import java.util.*
 
 @Entity(tableName = Constants.WATER_INTAKE_TABLE)
 data class WaterIntake (
-  var date: Date = Date(),
-  var amount: Int = 0,
-  var type: String = ""
+    var day: Date = Date(),
+    var time: Date = Date(),
+    var amount: Int = 0,
+    var type: String = ""
 ) {
     @PrimaryKey(autoGenerate = true)
     var id : Int? = null

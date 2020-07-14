@@ -29,10 +29,6 @@ class DatabaseModule {
 
     @Provides
     @Singleton
-    fun provideDayDAO (db : Database) = db.getDayDAO()
-
-    @Provides
-    @Singleton
     fun getWaterIntakesDAO (db : Database) = db.getWaterIntakesDAO()
 
 }

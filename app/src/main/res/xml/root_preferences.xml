@@ -1,0 +1,57 @@
+<PreferenceScreen xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <PreferenceCategory
+        app:iconSpaceReserved="false"
+        app:title="@string/user_header">
+
+        <ListPreference
+            app:icon="@drawable/ic_gender"
+            app:entries="@array/sex"
+            app:entryValues="@array/sex_values"
+            app:defaultValue="male"
+            app:key="sex"
+            app:title="@string/sex_title"
+            app:useSimpleSummaryProvider="true" />
+
+        <EditTextPreference
+            app:defaultValue="60"
+            app:icon="@drawable/ic_weight"
+            app:key="weight"
+            app:title="@string/weight_title"
+            app:useSimpleSummaryProvider="true" />
+
+        <SwitchPreferenceCompat
+            app:summaryOff="Use recommended amount of water"
+            app:summaryOn="Setup amount of water"
+            app:defaultValue="false"
+            app:key="auto_calculation"
+            app:title="@string/goal_header"
+            app:icon="@drawable/ic_water_bw" />
+
+        <ListPreference
+            app:dependency="auto_calculation"
+            app:entries="@array/goal"
+            app:entryValues="@array/goal_values"
+            app:defaultValue="2500"
+            app:key="water_goal"
+            app:useSimpleSummaryProvider="true" />
+
+    </PreferenceCategory>
+
+    <!--
+        <PreferenceCategory app:title="@string/sync_header">
+
+            <SwitchPreferenceCompat
+                app:key="sync"
+                app:title="@string/sync_title" />
+
+            <SwitchPreferenceCompat
+                app:dependency="sync"
+                app:key="attachment"
+                app:summaryOff="@string/attachment_summary_off"
+                app:summaryOn="@string/attachment_summary_on"
+                app:title="@string/attachment_title" />
+
+        </PreferenceCategory>
+        -->
+</PreferenceScreen>

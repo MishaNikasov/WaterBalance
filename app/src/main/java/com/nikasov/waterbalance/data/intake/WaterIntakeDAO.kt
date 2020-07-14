@@ -10,8 +10,8 @@ import java.util.*
 interface WaterIntakeDAO {
     @Insert
     suspend fun insertWaterIntake (waterIntake: WaterIntake)
-    @Query("SELECT * FROM water_intake_table WHERE date = :date ORDER BY DATE")
+    @Query("SELECT * FROM water_intake_table WHERE day = :date ORDER BY TIME")
     fun getWaterIntakesByDAte(date : Date) : LiveData<List<WaterIntake>>
-    @Query("SELECT * FROM water_intake_table ORDER BY DATE")
+    @Query("SELECT * FROM water_intake_table ORDER BY TIME")
     fun getAllWaterIntakes() : LiveData<List<WaterIntake>>
 }
