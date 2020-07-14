@@ -14,17 +14,23 @@ class Prefs @Inject constructor (
         return if (!sharedPref.getBoolean("auto_calculation", false)) {
             calculateWaterAmount()
         } else {
-            sharedPref.getString(Constants. WATER_GOAL, "2500")!!.toInt()
+            sharedPref.getString(Constants.WATER_GOAL, "2500")!!.toInt()
         }
     }
 
-    fun loadCurrentWaterIntake() : Int {
-        return sharedPref.getInt(Constants.CURRENT_WATER_INTAKE, 200)
-    }
+    fun loadCurrentWaterIntake() : Int = sharedPref.getInt(Constants.CURRENT_WATER_INTAKE, 200)
+
+    fun isOnboardingDone() : Boolean = sharedPref.getBoolean(Constants.IS_ONBOARDING_DONE, false)
 
     fun saveCurrentWaterIntakeAmount (amount: Int) {
         editor.apply {
             putInt(Constants.CURRENT_WATER_INTAKE, amount)
+        }.apply()
+    }
+
+    fun saveIsOnboardingDone() {
+        editor.apply {
+            putBoolean(Constants.IS_ONBOARDING_DONE, true)
         }.apply()
     }
 

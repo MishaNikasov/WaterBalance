@@ -15,7 +15,7 @@ import java.util.*
 class WaterIntakeAdapter(private val interaction: Interaction? = null) :
     RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
-    val DIFF_CALLBACK = object : DiffUtil.ItemCallback<WaterIntake>() {
+    private val DIFF_CALLBACK = object : DiffUtil.ItemCallback<WaterIntake>() {
 
         override fun areItemsTheSame(oldItem: WaterIntake, newItem: WaterIntake): Boolean {
             return oldItem == newItem
