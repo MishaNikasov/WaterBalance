@@ -18,61 +18,50 @@
         app:layout_constraintEnd_toStartOf="@+id/guideline2"
         app:layout_constraintStart_toStartOf="@+id/guideline" />
 
-    <LinearLayout
-        android:gravity="center|start"
-        android:id="@+id/sexLayout"
-        android:layout_marginTop="@dimen/big_margin"
-        android:orientation="horizontal"
-        app:layout_constraintEnd_toStartOf="@+id/guideline2"
-        app:layout_constraintStart_toStartOf="@+id/guideline"
-        app:layout_constraintTop_toBottomOf="@+id/enterTxt"
+    <com.google.android.material.textfield.TextInputLayout
+        app:startIconDrawable="@drawable/ic_gender"
+        app:startIconTint="@color/colorPrimary"
+        android:hint="@string/sex_title"
+        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense.ExposedDropdownMenu"
+        app:startIconContentDescription="@string/sex_title"
+        android:id="@+id/sexInput"
         android:layout_width="0dp"
-        android:layout_height="wrap_content">
-
-        <ImageView
-            android:layout_marginEnd="@dimen/average_margin"
-            android:src="@drawable/ic_gender"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"/>
-
-        <TextView
-            android:id="@+id/sexTxt"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:gravity="start"
-            android:text="@string/sex_title"
-            android:textColor="@color/text_gray"
-            android:textSize="@dimen/text_normal"/>
-    </LinearLayout>
-
-    <LinearLayout
-        android:gravity="center|start"
-        android:id="@+id/weightLayout"
-        android:layout_width="0dp"
-        android:layout_marginTop="@dimen/big_margin"
         android:layout_height="wrap_content"
-        android:orientation="horizontal"
         app:layout_constraintEnd_toStartOf="@+id/guideline2"
         app:layout_constraintStart_toStartOf="@+id/guideline"
-        app:layout_constraintTop_toBottomOf="@+id/sexLayout">
+        app:layout_constraintTop_toBottomOf="@+id/enterTxt">
 
-        <ImageView
-            android:layout_width="wrap_content"
+        <AutoCompleteTextView
+            android:id="@+id/sexList"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginEnd="@dimen/average_margin"
-            android:src="@drawable/ic_weight" />
+            android:inputType="none" />
 
-        <TextView
-            android:id="@+id/weightTxt"
-            android:layout_width="wrap_content"
+    </com.google.android.material.textfield.TextInputLayout>
+
+
+    <com.google.android.material.textfield.TextInputLayout
+        app:startIconDrawable="@drawable/ic_weight"
+        app:startIconTint="@color/colorPrimary"
+        android:hint="@string/weight_title"
+        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense"
+        app:startIconContentDescription="@string/sex_title"
+        android:id="@+id/weightInput"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        app:layout_constraintEnd_toStartOf="@+id/guideline2"
+        app:layout_constraintStart_toStartOf="@+id/guideline"
+        app:layout_constraintTop_toBottomOf="@+id/sexInput">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/weightList"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:gravity="start"
-            android:text="@string/weight_title"
-            android:textColor="@color/text_gray"
-            android:textSize="@dimen/text_normal" />
-    </LinearLayout>
+            android:inputType="number" />
 
-    <LinearLayout
+    </com.google.android.material.textfield.TextInputLayout>
+
+  <!--  <LinearLayout
         android:layout_marginTop="@dimen/big_margin"
         android:id="@+id/timeLayout"
         android:layout_width="0dp"
@@ -97,7 +86,7 @@
             android:text="@string/time"
             android:textColor="@color/text_gray"
             android:textSize="@dimen/text_normal" />
-    </LinearLayout>
+    </LinearLayout> -->
 
 
     <androidx.constraintlayout.widget.Guideline

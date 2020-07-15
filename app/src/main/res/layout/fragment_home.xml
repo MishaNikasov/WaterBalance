@@ -32,7 +32,6 @@
             android:id="@+id/percentTxt"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="40%"
             android:textColor="@color/colorPrimary"
             android:textSize="@dimen/text_title_big"
             android:textStyle="bold"
@@ -71,19 +70,10 @@
                     android:id="@+id/intakeValue"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="1750 ml"
                     android:textColor="@color/colorPrimary"
                     android:textSize="@dimen/text_title"
                     android:textStyle="bold" />
 
-                <TextView
-                    android:id="@+id/intakeLastValue"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="INTAKE"
-                    android:textColor="@color/colorPrimary"
-                    android:textSize="@dimen/text_small"
-                    android:textStyle="bold" />
             </LinearLayout>
 
             <View
@@ -111,18 +101,8 @@
                     android:id="@+id/goalValue"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="3000 ml"
                     android:textColor="@color/colorPrimary"
                     android:textSize="@dimen/text_title"
-                    android:textStyle="bold" />
-
-                <TextView
-                    android:id="@+id/goalCurrentValue"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="INTAKE"
-                    android:textColor="@color/colorPrimary"
-                    android:textSize="@dimen/text_small"
                     android:textStyle="bold" />
             </LinearLayout>
 
@@ -152,7 +132,6 @@
                 android:id="@+id/howMuchValue"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="500 ml"
                 android:textColor="@color/colorPrimary"
                 android:textSize="@dimen/text_title"
                 android:textStyle="bold" />

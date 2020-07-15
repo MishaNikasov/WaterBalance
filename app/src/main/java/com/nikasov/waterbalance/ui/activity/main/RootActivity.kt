@@ -35,7 +35,7 @@ class RootActivity : AppCompatActivity() {
     }
 
     private fun checkIfOnboardingDone() {
-        if (!viewModel.isOnboardingDone()) {
+        if (viewModel.isOnboardingDone()) {
             hostFragment.findNavController().apply {
                 popBackStack()
                 navigate(R.id.to_onboardingFragment)
