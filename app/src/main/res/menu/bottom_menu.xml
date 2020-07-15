@@ -7,9 +7,9 @@
         android:iconTint="@color/white"
         android:id="@+id/mainFragment"
         android:icon="@drawable/ic_water_bw"
-        android:title="Home" />
+        android:title="@string/home" />
 
-    <item android:title="Statistic"
+    <item android:title="@string/statistic"
         android:iconTint="@color/white"
         android:id="@+id/statisticFragment"
         android:icon="@drawable/ic_stat" />
@@ -18,5 +18,5 @@
         android:iconTint="@color/white"
         android:id="@+id/settingsFragment"
         android:icon="@drawable/ic_settings"
-        android:title="Settings" />
+        android:title="@string/settings" />
 </menu>

@@ -1,49 +1,22 @@
 package com.nikasov.waterbalance.ui.fragment.main
 
+import androidx.fragment.app.Fragment
 import androidx.hilt.lifecycle.ViewModelInject
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import androidx.lifecycle.viewModelScope
 import com.nikasov.waterbalance.common.Prefs
-import com.nikasov.waterbalance.data.intake.WaterIntake
-import com.nikasov.waterbalance.data.repository.WaterIntakesRepository
-import com.nikasov.waterbalance.utils.DateUtils
-import kotlinx.coroutines.launch
-import java.util.*
+import com.nikasov.waterbalance.ui.fragment.main.home.HomeFragment
+import com.nikasov.waterbalance.ui.fragment.main.settings.SettingsFragment
+import com.nikasov.waterbalance.ui.fragment.main.statistic.StatisticFragment
 
-class MainViewModel @ViewModelInject constructor (
-    private val waterIntakesRepository: WaterIntakesRepository,
+class MainViewModel @ViewModelInject constructor(
     private val prefs: Prefs
 ) : ViewModel() {
 
-    val goal = prefs.loadGoal()
-    val currentWaterIntakeAmount = MutableLiveData(prefs.loadCurrentWaterIntake())
-
-    val waterIntakes: LiveData<List<WaterIntake>> = waterIntakesRepository.getWaterIntakesByDAte(getCurrentDay())
-
-    fun saveCurrentIntake(amount: Int) {
-        prefs.saveCurrentWaterIntakeAmount(amount)
-        currentWaterIntakeAmount.postValue(prefs.loadCurrentWaterIntake())
-    }
-
-    private fun getCurrentTime() : Date {
-        return Calendar.getInstance().time
-    }
-
-    private fun getCurrentDay() : Date {
-        return DateUtils.getDayByDate(Calendar.getInstance().time)
-    }
-
-    fun addWaterIntake() {
-        viewModelScope.launch {
-            waterIntakesRepository.insertWaterIntake(
-                WaterIntake(
-                    getCurrentDay(),
-                    getCurrentTime(),
-                    currentWaterIntakeAmount.value!!
-                )
-            )
-        }
+    fun getOnboardingFragmentsList() : List<Fragment> {
+        return arrayListOf(
+            HomeFragment(),
+            StatisticFragment(),
+            SettingsFragment()
+        )
     }
 }

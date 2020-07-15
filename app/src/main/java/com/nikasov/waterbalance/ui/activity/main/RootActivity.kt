@@ -20,20 +20,15 @@ class RootActivity : AppCompatActivity() {
         setContentView(R.layout.activity_root)
 
         initNavController()
-
         checkIfOnboardingDone()
-
-        bottomNavigation.setupWithNavController(hostFragment.findNavController())
     }
 
     private fun initNavController() {
         hostFragment.findNavController().addOnDestinationChangedListener { _, destination, _ ->
             when (destination.id) {
                 R.id.onboardingFragment -> {
-                    bottomNavigation.visibility = View.GONE
                 }
                 else -> {
-                    bottomNavigation.visibility = View.VISIBLE
                 }
             }
         }

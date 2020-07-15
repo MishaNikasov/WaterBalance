@@ -1,4 +1,4 @@
-package com.nikasov.waterbalance.ui.fragment.statistic
+package com.nikasov.waterbalance.ui.fragment.main.statistic
 
 import androidx.hilt.lifecycle.ViewModelInject
 import androidx.lifecycle.LiveData

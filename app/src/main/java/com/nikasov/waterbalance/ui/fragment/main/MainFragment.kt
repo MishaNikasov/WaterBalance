@@ -2,113 +2,50 @@ package com.nikasov.waterbalance.ui.fragment.main
 
 import android.os.Bundle
 import android.view.View
+import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
-import androidx.lifecycle.Observer
-import com.google.android.material.dialog.MaterialAlertDialogBuilder
+import com.google.android.material.tabs.TabLayoutMediator
 import com.nikasov.waterbalance.R
-import com.nikasov.waterbalance.data.intake.WaterIntake
-import com.nikasov.waterbalance.ui.adapter.WaterIntakeAdapter
+import com.nikasov.waterbalance.utils.ViewPagerAdapter
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.android.synthetic.main.fragment_main.*
-import timber.log.Timber
 
 @AndroidEntryPoint
 class MainFragment : Fragment(R.layout.fragment_main) {
 
     private val viewModel : MainViewModel by viewModels()
 
-    private lateinit var waterDialog : MaterialAlertDialogBuilder
-
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        initUi()
+        initPager()
     }
 
-    private fun initUi() {
+    private fun initPager() {
 
-        initProgress()
-        initWaterIntakesList()
-        initWaterDialog()
+        val pagerAdapter = ViewPagerAdapter(
+            viewModel.getOnboardingFragmentsList(),
+            requireActivity().supportFragmentManager,
+            lifecycle
+        )
 
-        floatingAddButton.setOnClickListener {
-            addWaterIntake()
+        mainPager.apply {
+            adapter = pagerAdapter
         }
 
-        floatingChangeButton.setOnClickListener {
-            showWaterDialog()
-        }
-    }
-
-    private fun addWaterIntake() {
-        viewModel.addWaterIntake()
-    }
-
-    private fun initProgress() {
-        viewModel.goal.also { goal ->
-            circularProgressBar.progressMax = goal.toFloat()
-            val goalTxt = "$goal ml"
-            goalValue.text = goalTxt
-        }
-        viewModel.currentWaterIntakeAmount.observe(viewLifecycleOwner, Observer { amount ->
-            val amountTxt = "$amount ml"
-            nextAmount.text = amountTxt
-        })
-    }
-
-    private fun initWaterIntakesList() {
-        val waterIntakeAdapter = WaterIntakeAdapter()
-        waterIntakesRecycler.apply {
-            adapter = waterIntakeAdapter
-        }
-        viewModel.waterIntakes.observe(viewLifecycleOwner, Observer {list ->
-            waterIntakeAdapter.submitList(list)
-            updateProgress(list)
-        })
-    }
-
-    private fun updateProgress(list : List<WaterIntake>) {
-
-        var progress = 0
-        list.forEach { waterIntake ->
-            progress += waterIntake.amount
-        }
-        val intake = "$progress ml"
-        intakeValue.text = intake
-
-        if (progress >= viewModel.goal) {
-            circularProgressBar.progress = circularProgressBar.progressMax
-        } else {
-            circularProgressBar.setProgressWithAnimation(progress.toFloat(), 1000)
-        }
-
-        val howMuchStr =
-            if (viewModel.goal - progress <= 0) {
-                "Well done!"
-            } else {
-                "${viewModel.goal - progress} ml"
-            }
-
-        val currentAmountPercent = "${((progress.toFloat()/viewModel.goal.toFloat())*100).toInt()}%"
-
-        percentTxt.text = currentAmountPercent
-        howMuchValue.text = howMuchStr
-    }
-
-    private fun initWaterDialog() {
-        waterDialog = MaterialAlertDialogBuilder(requireContext())
-            .setTitle(resources.getString(R.string.amount_of_water))
-            .setItems(resources.getStringArray(R.array.amounts_of_water)) { dialog, which ->
-                when (which) {
-                    0 -> viewModel.saveCurrentIntake(300)
-                    1 -> viewModel.saveCurrentIntake(400)
-                    2 -> viewModel.saveCurrentIntake(500)
-                    3 -> viewModel.saveCurrentIntake(600)
+        TabLayoutMediator(tabLayout, mainPager) { tab, position ->
+            when (position) {
+                0 -> {
+                    tab.text = resources.getString(R.string.home)
+                    tab.icon = ContextCompat.getDrawable(requireContext(), R.drawable.ic_water_bw) }
+                1 -> {
+                    tab.text = resources.getString(R.string.statistic)
+                    tab.icon = ContextCompat.getDrawable(requireContext(), R.drawable.ic_stat) }
+                2 -> {
+                    tab.text = resources.getString(R.string.settings)
+                    tab.icon = ContextCompat.getDrawable(requireContext(), R.drawable.ic_settings)
                 }
             }
-    }
-
-    private fun showWaterDialog() {
-        waterDialog.show()
+        }.attach()
     }
 }

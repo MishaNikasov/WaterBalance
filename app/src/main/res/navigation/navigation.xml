@@ -8,23 +8,16 @@
         app:destination="@id/onboardingFragment" />
 
     <fragment
-        android:id="@+id/mainFragment"
-        android:name="com.nikasov.waterbalance.ui.fragment.main.MainFragment"
-        android:label="MainFragment" />
-    <fragment
-        android:id="@+id/settingsFragment"
-        android:name="com.nikasov.waterbalance.ui.fragment.settings.SettingsFragment"
-        android:label="SettingsFragment" />
-    <fragment
-        android:id="@+id/statisticFragment"
-        android:name="com.nikasov.waterbalance.ui.fragment.statistic.StatisticFragment"
-        android:label="StatisticFragment" />
-    <fragment
         android:id="@+id/onboardingFragment"
         android:name="com.nikasov.waterbalance.ui.fragment.onboarding.OnboardingFragment"
         android:label="OnboardingFragment" >
         <action
-            android:id="@+id/action_onboardingFragment_to_mainFragment"
+            android:id="@+id/fromOnboardingToMain"
             app:destination="@id/mainFragment" />
     </fragment>
+
+    <fragment
+        android:id="@+id/mainFragment"
+        android:name="com.nikasov.waterbalance.ui.fragment.main.MainFragment"
+        android:label="MainFragment" />
 </navigation>

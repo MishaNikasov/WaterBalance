@@ -1,4 +1,4 @@
-package com.nikasov.waterbalance.ui.fragment.settings
+package com.nikasov.waterbalance.ui.fragment.main.settings
 
 import android.os.Bundle
 import androidx.preference.PreferenceFragmentCompat

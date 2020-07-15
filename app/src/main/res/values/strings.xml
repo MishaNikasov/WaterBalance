@@ -18,5 +18,8 @@
     <string name="sex_title">Sex</string>
     <string name="enter_information">Enter information about you</string>
     <string name="time">Activity time</string>
+    <string name="home">Home</string>
+    <string name="statistic">Statistic</string>
+    <string name="settings">Settings</string>
 
 </resources>

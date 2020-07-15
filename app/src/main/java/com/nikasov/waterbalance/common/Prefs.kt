@@ -11,7 +11,7 @@ class Prefs @Inject constructor (
     private val editor = sharedPref.edit()
 
     fun loadGoal() : Int {
-        return if (!sharedPref.getBoolean("auto_calculation", false)) {
+        return if (!isAutoCalculation()) {
             calculateWaterAmount()
         } else {
             sharedPref.getString(Constants.WATER_GOAL, "2500")!!.toInt()
@@ -20,11 +20,29 @@ class Prefs @Inject constructor (
 
     fun loadCurrentWaterIntake() : Int = sharedPref.getInt(Constants.CURRENT_WATER_INTAKE, 200)
 
+    fun loadSex() : String? = sharedPref.getString("sex", "male")
+
+    fun loadWeight() : String? = sharedPref.getString("weight", "60")
+
     fun isOnboardingDone() : Boolean = sharedPref.getBoolean(Constants.IS_ONBOARDING_DONE, false)
+
+    fun isAutoCalculation() : Boolean = sharedPref.getBoolean("auto_calculation", false)
 
     fun saveCurrentWaterIntakeAmount (amount: Int) {
         editor.apply {
             putInt(Constants.CURRENT_WATER_INTAKE, amount)
+        }.apply()
+    }
+
+    fun saveSex (sex: String) {
+        editor.apply {
+            putString("sex", sex)
+        }.apply()
+    }
+
+    fun saveWeight (weight: String) {
+        editor.apply {
+            putString("weight", weight)
         }.apply()
     }
 
@@ -34,9 +52,10 @@ class Prefs @Inject constructor (
         }.apply()
     }
 
-    private fun calculateWaterAmount() : Int{
-        val sex = sharedPref.getString("sex", "male")
-        val weight = sharedPref.getString("weight", "60")
+    private fun calculateWaterAmount() : Int {
+
+        val sex = loadSex()
+        val weight = loadWeight()
 
         return if (sex!! == "male") {
             (35f*weight!!.toFloat()).toInt()

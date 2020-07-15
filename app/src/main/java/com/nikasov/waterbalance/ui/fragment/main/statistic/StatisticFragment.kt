@@ -1,4 +1,4 @@
-package com.nikasov.waterbalance.ui.fragment.statistic
+package com.nikasov.waterbalance.ui.fragment.main.statistic
 
 import android.os.Bundle
 import android.view.View
