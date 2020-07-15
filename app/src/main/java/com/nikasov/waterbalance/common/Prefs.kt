@@ -2,6 +2,9 @@ package com.nikasov.waterbalance.common
 
 import android.content.Context
 import androidx.preference.PreferenceManager
+import com.nikasov.waterbalance.utils.booleanLiveData
+import com.nikasov.waterbalance.utils.intLiveData
+import com.nikasov.waterbalance.utils.stringLiveData
 import javax.inject.Inject
 
 class Prefs @Inject constructor (
@@ -10,23 +13,17 @@ class Prefs @Inject constructor (
     private val sharedPref = PreferenceManager.getDefaultSharedPreferences(context)
     private val editor = sharedPref.edit()
 
-    fun loadGoal() : Int {
-        return if (!isAutoCalculation()) {
-            calculateWaterAmount()
-        } else {
-            sharedPref.getString(Constants.WATER_GOAL, "2500")!!.toInt()
-        }
-    }
+    fun loadCurrentWaterIntake() = sharedPref.intLiveData(Constants.CURRENT_WATER_INTAKE, 200)
 
-    fun loadCurrentWaterIntake() : Int = sharedPref.getInt(Constants.CURRENT_WATER_INTAKE, 200)
+    fun loadGoal() = sharedPref.intLiveData(Constants.WATER_GOAL, 2000)
 
-    fun loadSex() : String? = sharedPref.getString("sex", "male")
+    fun loadSex() = sharedPref.stringLiveData("sex", "male")
 
-    fun loadWeight() : String? = sharedPref.getString("weight", "60")
+    fun loadWeight() = sharedPref.stringLiveData("weight", "60")
 
-    fun isOnboardingDone() : Boolean = sharedPref.getBoolean(Constants.IS_ONBOARDING_DONE, false)
+    fun isOnboardingDone() = sharedPref.booleanLiveData(Constants.IS_ONBOARDING_DONE, false)
 
-    fun isAutoCalculation() : Boolean = sharedPref.getBoolean("auto_calculation", false)
+    fun isAutoCalculation() = sharedPref.booleanLiveData("auto_calculation", false)
 
     fun saveCurrentWaterIntakeAmount (amount: Int) {
         editor.apply {
@@ -46,21 +43,37 @@ class Prefs @Inject constructor (
         }.apply()
     }
 
+    fun saveGoal (goal: Int) {
+        editor.apply {
+            putInt(Constants.WATER_GOAL, goal)
+        }.apply()
+    }
+
     fun saveIsOnboardingDone() {
         editor.apply {
             putBoolean(Constants.IS_ONBOARDING_DONE, true)
         }.apply()
     }
 
-    private fun calculateWaterAmount() : Int {
+    fun setGoal() {
+        if (!isAutoCalculation().value!!) {
+            calculateWaterAmount()
+        } else {
+            saveGoal(sharedPref.getInt(Constants.WATER_GOAL, 2500))
+        }
+    }
 
-        val sex = loadSex()
-        val weight = loadWeight()
+    private fun calculateWaterAmount() {
 
-        return if (sex!! == "male") {
+        val sex = loadSex().value
+        val weight = loadWeight().value
+
+        val goal = if (sex!! == "male") {
             (35f*weight!!.toFloat()).toInt()
         } else {
             (31f*weight!!.toFloat()).toInt()
         }
+
+        saveGoal(goal)
     }
 }

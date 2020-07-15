@@ -44,11 +44,16 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
     }
 
     private fun initProgress() {
-        viewModel.goal.also { goal ->
-            circularProgressBar.progressMax = goal.toFloat()
-            val goalTxt = "$goal ml"
-            goalValue.text = goalTxt
-        }
+
+        viewModel.goal.observe(viewLifecycleOwner, Observer {
+            it.also { goal ->
+                circularProgressBar.progressMax = goal.toFloat()
+                val goalTxt = "$goal ml"
+                goalValue.text = goalTxt
+            }
+            updateUi()
+        })
+
         viewModel.currentWaterIntakeAmount.observe(viewLifecycleOwner, Observer { amount ->
             val amountTxt = "$amount ml"
             nextAmount.text = amountTxt
@@ -62,33 +67,29 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
         }
         viewModel.waterIntakes.observe(viewLifecycleOwner, Observer {list ->
             waterIntakeAdapter.submitList(list)
-            updateProgress(list)
+            viewModel.setCurrentProgress(list)
+            updateUi()
         })
     }
 
-    private fun updateProgress(list : List<WaterIntake>) {
-
-        var progress = 0
-        list.forEach { waterIntake ->
-            progress += waterIntake.amount
-        }
-        val intake = "$progress ml"
+    private fun updateUi() {
+        val intake = "${viewModel.currentProgress} ml"
         intakeValue.text = intake
 
-        if (progress >= viewModel.goal) {
+        if (viewModel.currentProgress >= viewModel.goal.value!!) {
             circularProgressBar.progress = circularProgressBar.progressMax
         } else {
-            circularProgressBar.setProgressWithAnimation(progress.toFloat(), 1000)
+            circularProgressBar.setProgressWithAnimation(viewModel.currentProgress.toFloat(), 1000)
         }
 
         val howMuchStr =
-            if (viewModel.goal - progress <= 0) {
+            if (viewModel.goal.value!! - viewModel.currentProgress <= 0) {
                 "Well done!"
             } else {
-                "${viewModel.goal - progress} ml"
+                "${viewModel.goal.value!! - viewModel.currentProgress} ml"
             }
 
-        val currentAmountPercent = "${((progress.toFloat()/viewModel.goal.toFloat())*100).toInt()}%"
+        val currentAmountPercent = "${((viewModel.currentProgress.toFloat()/viewModel.goal.value!!.toFloat())*100).toInt()}%"
 
         percentTxt.text = currentAmountPercent
         howMuchValue.text = howMuchStr
@@ -97,7 +98,7 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
     private fun initWaterDialog() {
         waterDialog = MaterialAlertDialogBuilder(requireContext())
             .setTitle(resources.getString(R.string.amount_of_water))
-            .setItems(resources.getStringArray(R.array.amounts_of_water)) { dialog, which ->
+            .setItems(resources.getStringArray(R.array.amounts_of_water)) { _, which ->
                 when (which) {
                     0 -> viewModel.saveCurrentIntake(300)
                     1 -> viewModel.saveCurrentIntake(400)

@@ -2,7 +2,6 @@ package com.nikasov.waterbalance.ui.fragment.main.home
 
 import androidx.hilt.lifecycle.ViewModelInject
 import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.nikasov.waterbalance.common.Prefs
@@ -18,13 +17,22 @@ class HomeViewModel @ViewModelInject constructor (
 ) : ViewModel() {
 
     val goal = prefs.loadGoal()
-    val currentWaterIntakeAmount = MutableLiveData(prefs.loadCurrentWaterIntake())
+    val currentWaterIntakeAmount = prefs.loadCurrentWaterIntake()
+
+    var currentProgress = 0
 
     val waterIntakes: LiveData<List<WaterIntake>> = waterIntakesRepository.getWaterIntakesByDAte(getCurrentDay())
 
+    fun setCurrentProgress(list : List<WaterIntake>) {
+        var progress = 0
+        list.forEach { waterIntake ->
+            progress += waterIntake.amount
+        }
+        currentProgress = progress
+    }
+
     fun saveCurrentIntake(amount: Int) {
         prefs.saveCurrentWaterIntakeAmount(amount)
-        currentWaterIntakeAmount.postValue(prefs.loadCurrentWaterIntake())
     }
 
     private fun getCurrentTime() : Date {

@@ -7,5 +7,5 @@ import com.nikasov.waterbalance.common.Prefs
 class RootViewModel @ViewModelInject constructor(
     private val prefs: Prefs
 ) : ViewModel() {
-    fun isOnboardingDone() : Boolean = prefs.isOnboardingDone()
+    fun isOnboardingDone() : Boolean = prefs.isOnboardingDone().value!!
 }
