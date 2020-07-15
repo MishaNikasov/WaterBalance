@@ -18,4 +18,8 @@ class OnboardingViewModel @ViewModelInject constructor(
         )
     }
 
+    fun doneOnboarding() {
+        prefs.saveIsOnboardingDone()
+    }
+
 }

@@ -6,11 +6,17 @@
     <string name="goal">GOAL</string>
     <string name="intake">INTAKE</string>
 
+    <!-- Onboarding -->
+    <string name="finish">Finish</string>
+    <string name="next">Next</string>
+
     <!-- User -->
     <string name="user_header">User</string>
     <string name="goal_header">Daily goal</string>
 
     <string name="weight_title">Weight</string>
     <string name="sex_title">Sex</string>
+    <string name="enter_information">Enter information about you</string>
+    <string name="time">Activity time</string>
 
 </resources>

@@ -8,8 +8,5 @@ class SettingsOnboardingViewModel @ViewModelInject constructor(
     private val prefs: Prefs
 ) : ViewModel() {
 
-    fun doneOnboarding() {
-        prefs.saveIsOnboardingDone()
-    }
 
 }

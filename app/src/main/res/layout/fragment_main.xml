@@ -212,8 +212,8 @@
         android:id="@+id/floatingAddButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:scaleX="1.3"
-        android:scaleY="1.3"
+        android:scaleX="1.2"
+        android:scaleY="1.2"
         app:backgroundTint="@color/colorPrimary"
         app:layout_constraintBottom_toTopOf="@+id/listLayout"
         app:layout_constraintEnd_toEndOf="parent"
@@ -227,12 +227,14 @@
         android:id="@+id/floatingChangeButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        app:layout_constraintBottom_toTopOf="@+id/listLayout"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/listLayout"
+        android:scaleX="0.8"
+        android:scaleY="0.8"
         app:backgroundTint="@color/colorPrimary"
-        app:layout_constraintHorizontal_bias="0.75"
+        app:layout_constraintBottom_toBottomOf="@+id/floatingAddButton"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.3"
+        app:layout_constraintStart_toEndOf="@+id/floatingAddButton"
+        app:layout_constraintTop_toTopOf="@+id/floatingAddButton"
         app:srcCompat="@drawable/ic_water_bw"
         app:tint="@color/white"
         app:useCompatPadding="true" />
@@ -242,23 +244,23 @@
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_marginTop="60dp"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/progressBlock">
 
         <LinearLayout
-            android:layout_marginStart="10dp"
-            android:layout_marginEnd="10dp"
-            android:padding="@dimen/basic_padding"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical">
+            android:layout_marginStart="10dp"
+            android:layout_marginEnd="10dp"
+            android:orientation="vertical"
+            android:padding="@dimen/basic_padding">
 
             <androidx.constraintlayout.widget.ConstraintLayout
-                android:layout_marginTop="20dp"
                 android:layout_width="match_parent"
-                android:layout_height="40dp">
+                android:layout_height="40dp"
+                android:layout_marginTop="20dp">
 
                 <ImageView
                     android:id="@+id/icon"
@@ -273,12 +275,12 @@
 
 
                 <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
                     android:orientation="vertical"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintStart_toEndOf="@id/icon"
-                    app:layout_constraintTop_toTopOf="parent"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content">
+                    app:layout_constraintTop_toTopOf="parent">
 
                     <TextView
                         android:id="@+id/time"
@@ -309,13 +311,13 @@
                     app:layout_constraintTop_toTopOf="parent" />
 
                 <ImageView
-                    android:visibility="invisible"
                     android:id="@+id/edit"
                     android:layout_width="20dp"
                     android:layout_height="20dp"
                     android:layout_marginEnd="@dimen/average_margin"
                     android:src="@drawable/ic_arrow_right"
                     android:tint="@color/colorPrimary"
+                    android:visibility="invisible"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintTop_toTopOf="parent" />
@@ -323,15 +325,15 @@
             </androidx.constraintlayout.widget.ConstraintLayout>
 
             <androidx.recyclerview.widget.RecyclerView
-                app:reverseLayout="true"
-                android:overScrollMode="never"
                 android:id="@+id/waterIntakesRecycler"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:overScrollMode="never"
                 app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
+                app:reverseLayout="true"
                 tools:listitem="@layout/item_water_intake" />
         </LinearLayout>
 

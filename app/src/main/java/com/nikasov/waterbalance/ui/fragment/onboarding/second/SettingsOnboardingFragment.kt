@@ -17,10 +17,5 @@ class SettingsOnboardingFragment : Fragment(R.layout.fragment_settings_onboardin
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
-        end.setOnClickListener {
-            viewModel.doneOnboarding()
-            findNavController().navigate(R.id.action_onboardingFragment_to_mainFragment)
-        }
     }
 }
