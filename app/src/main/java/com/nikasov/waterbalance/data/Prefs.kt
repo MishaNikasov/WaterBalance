@@ -1,7 +1,8 @@
-package com.nikasov.waterbalance.common
+package com.nikasov.waterbalance.data
 
 import android.content.Context
 import androidx.preference.PreferenceManager
+import com.nikasov.waterbalance.common.Constants
 import com.nikasov.waterbalance.utils.booleanLiveData
 import com.nikasov.waterbalance.utils.intLiveData
 import com.nikasov.waterbalance.utils.stringLiveData
@@ -15,7 +16,7 @@ class Prefs @Inject constructor (
 
     fun loadCurrentWaterIntake() = sharedPref.intLiveData(Constants.CURRENT_WATER_INTAKE, 200)
 
-    fun loadGoal() = sharedPref.intLiveData(Constants.WATER_GOAL, 2000)
+    fun loadGoal() = sharedPref.stringLiveData(Constants.WATER_GOAL, "2500")
 
     fun loadSex() = sharedPref.stringLiveData("sex", "male")
 
@@ -43,9 +44,9 @@ class Prefs @Inject constructor (
         }.apply()
     }
 
-    fun saveGoal (goal: Int) {
+    fun saveGoal (goal: String) {
         editor.apply {
-            putInt(Constants.WATER_GOAL, goal)
+            putString(Constants.WATER_GOAL, goal)
         }.apply()
     }
 
@@ -55,11 +56,11 @@ class Prefs @Inject constructor (
         }.apply()
     }
 
-    fun setGoal() {
+    fun setGoal(amount : String? = null) {
         if (!isAutoCalculation().value!!) {
             calculateWaterAmount()
         } else {
-            saveGoal(sharedPref.getInt(Constants.WATER_GOAL, 2500))
+            saveGoal(sharedPref.getString(Constants.WATER_GOAL, amount)!!)
         }
     }
 
@@ -74,6 +75,6 @@ class Prefs @Inject constructor (
             (31f*weight!!.toFloat()).toInt()
         }
 
-        saveGoal(goal)
+        saveGoal("$goal")
     }
 }

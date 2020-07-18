@@ -9,6 +9,7 @@
     <!-- Onboarding -->
     <string name="finish">Finish</string>
     <string name="next">Next</string>
+    <string name="goal_lower">Goal</string>
 
     <!-- User -->
     <string name="user_header">User</string>

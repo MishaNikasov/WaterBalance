@@ -76,17 +76,17 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
         val intake = "${viewModel.currentProgress} ml"
         intakeValue.text = intake
 
-        if (viewModel.currentProgress >= viewModel.goal.value!!) {
+        if (viewModel.currentProgress >= viewModel.goal.value!!.toInt()) {
             circularProgressBar.progress = circularProgressBar.progressMax
         } else {
             circularProgressBar.setProgressWithAnimation(viewModel.currentProgress.toFloat(), 1000)
         }
 
         val howMuchStr =
-            if (viewModel.goal.value!! - viewModel.currentProgress <= 0) {
+            if (viewModel.goal.value!!.toInt() - viewModel.currentProgress <= 0) {
                 "Well done!"
             } else {
-                "${viewModel.goal.value!! - viewModel.currentProgress} ml"
+                "${viewModel.goal.value!!.toInt() - viewModel.currentProgress} ml"
             }
 
         val currentAmountPercent = "${((viewModel.currentProgress.toFloat()/viewModel.goal.value!!.toFloat())*100).toInt()}%"

@@ -1,7 +1,7 @@
 package com.nikasov.waterbalance.di
 
 import android.content.Context
-import com.nikasov.waterbalance.common.Prefs
+import com.nikasov.waterbalance.data.Prefs
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -14,5 +14,6 @@ import javax.inject.Singleton
 class AppModule {
     @Singleton
     @Provides
-    fun providePrefs(@ApplicationContext context: Context) : Prefs = Prefs(context)
+    fun providePrefs(@ApplicationContext context: Context) : Prefs =
+        Prefs(context)
 }

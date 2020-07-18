@@ -30,6 +30,12 @@ class SettingsFragment : PreferenceFragmentCompat() {
             viewModel.setUpGoal()
         })
         viewModel.isAutoCalculation.observe(viewLifecycleOwner, Observer {
+            if (it) {
+                viewModel.setUpGoal()
+            } else
+                viewModel.setUpGoal()
+        })
+        viewModel.goal.observe(viewLifecycleOwner, Observer {
             viewModel.setUpGoal()
         })
     }

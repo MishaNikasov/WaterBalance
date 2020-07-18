@@ -1,4 +1,5 @@
-<PreferenceScreen xmlns:app="http://schemas.android.com/apk/res-auto">
+<PreferenceScreen xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:android="http://schemas.android.com/apk/res/android">
 
     <PreferenceCategory
         app:iconSpaceReserved="false"
@@ -24,12 +25,12 @@
             app:key="auto_calculation"
             app:title="@string/goal_header"
             app:icon="@drawable/ic_water_bw" />
-       <!-- <ListPreference
-            app:dependency="auto_calculation"
-            app:entries="@array/goal"
-            app:entryValues="@array/goal_values"
+        <EditTextPreference
+            android:dependency="auto_calculation"
+            app:defaultValue="2500"
             app:key="water_goal"
-            app:useSimpleSummaryProvider="true" /> -->
+            app:title="@string/goal_lower"
+            app:useSimpleSummaryProvider="true" />
     </PreferenceCategory>
 
 </PreferenceScreen>
