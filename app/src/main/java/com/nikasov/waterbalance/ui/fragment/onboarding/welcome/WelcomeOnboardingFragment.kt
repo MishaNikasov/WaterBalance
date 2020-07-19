@@ -1,16 +1,15 @@
-package com.nikasov.waterbalance.ui.fragment.onboarding.second
+package com.nikasov.waterbalance.ui.fragment.onboarding.welcome
 
 import android.os.Bundle
 import android.view.View
+import android.widget.ArrayAdapter
+import android.widget.AutoCompleteTextView
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import com.nikasov.waterbalance.R
-import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.android.synthetic.main.fragment_profile_onboarding.*
 
-@AndroidEntryPoint
-class SettingsOnboardingFragment : Fragment(R.layout.fragment_settings_onboarding) {
-
-    private val viewModel : SettingsOnboardingViewModel by viewModels()
+class WelcomeOnboardingFragment : Fragment(R.layout.fragment_welcome_onboarding) {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)

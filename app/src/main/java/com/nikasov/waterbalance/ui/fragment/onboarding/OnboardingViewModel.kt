@@ -5,7 +5,8 @@ import androidx.hilt.lifecycle.ViewModelInject
 import androidx.lifecycle.ViewModel
 import com.nikasov.waterbalance.data.Prefs
 import com.nikasov.waterbalance.ui.fragment.onboarding.first.ProfileOnboardingFragment
-import com.nikasov.waterbalance.ui.fragment.onboarding.second.SettingsOnboardingFragment
+import com.nikasov.waterbalance.ui.fragment.onboarding.summary.SettingsOnboardingFragment
+import com.nikasov.waterbalance.ui.fragment.onboarding.welcome.WelcomeOnboardingFragment
 
 class OnboardingViewModel @ViewModelInject constructor(
     private val prefs: Prefs
@@ -13,6 +14,7 @@ class OnboardingViewModel @ViewModelInject constructor(
 
     fun getOnboardingFragmentsList() : List<Fragment> {
         return arrayListOf(
+            WelcomeOnboardingFragment(),
             ProfileOnboardingFragment(),
             SettingsOnboardingFragment()
         )

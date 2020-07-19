@@ -29,19 +29,16 @@ class OnboardingFragment : Fragment(R.layout.fragment_onboarding) {
             lifecycle
         )
 
-        setBtnClick(false)
+        setBtnClick(true)
 
         val listener = object : ViewPager2.OnPageChangeCallback() {
             override fun onPageSelected(position: Int) {
-                when (position) {
-                    0 -> {
-                        btnNext.text = resources.getString(R.string.next)
-                        setBtnClick(false)
-                    }
-                    1 -> {
-                        btnNext.text = resources.getString(R.string.finish)
-                        setBtnClick(true)
-                    }
+                if (position != pagerAdapter.itemCount - 1) {
+                    btnNext.text = resources.getString(R.string.next)
+                    setBtnClick(true)
+                } else {
+                    btnNext.text = resources.getString(R.string.finish)
+                    setBtnClick(false)
                 }
             }
         }
@@ -55,7 +52,7 @@ class OnboardingFragment : Fragment(R.layout.fragment_onboarding) {
     }
 
     private fun setBtnClick(isNext: Boolean) {
-        if (!isNext)
+        if (isNext)
             btnNext.setOnClickListener {
                 boardingPager.currentItem = boardingPager.currentItem + 1
             } else {

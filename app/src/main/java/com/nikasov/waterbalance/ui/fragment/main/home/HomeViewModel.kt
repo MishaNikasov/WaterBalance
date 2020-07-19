@@ -19,8 +19,6 @@ class HomeViewModel @ViewModelInject constructor (
     val goal = prefs.loadGoal()
     val currentWaterIntakeAmount = prefs.loadCurrentWaterIntake()
 
-//    var currentDay : Date = Date()
-
     var currentProgress = 0
 
     val waterIntakes: LiveData<List<WaterIntake>> = waterIntakesRepository.getWaterIntakesByDAte(getCurrentDay())
@@ -33,9 +31,15 @@ class HomeViewModel @ViewModelInject constructor (
         currentProgress = progress
     }
 
-    fun setDay(day: Date) {
-//        currentDay
+    fun deleteWaterIntake(waterIntake: WaterIntake) {
+        viewModelScope.launch {
+            waterIntakesRepository.deleteWaterIntake(waterIntake)
+        }
     }
+
+    fun isFirstRun() = prefs.isFirstRun()
+
+    fun saveIsFirstRun() = prefs.saveIsFirstRun()
 
     fun saveCurrentIntake(amount: Int) {
         prefs.saveCurrentWaterIntakeAmount(amount)

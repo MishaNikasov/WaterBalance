@@ -5,6 +5,10 @@ import android.view.View
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
+import com.elconfidencial.bubbleshowcase.BubbleShowCase
+import com.elconfidencial.bubbleshowcase.BubbleShowCaseBuilder
+import com.elconfidencial.bubbleshowcase.BubbleShowCaseListener
+import com.elconfidencial.bubbleshowcase.BubbleShowCaseSequence
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.nikasov.waterbalance.R
 import com.nikasov.waterbalance.data.intake.WaterIntake
@@ -21,7 +25,15 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        isFirstRun()
         initUi()
+    }
+
+    private fun isFirstRun() {
+        if (viewModel.isFirstRun().value!!) {
+            viewModel.saveIsFirstRun()
+            showCase()
+        }
     }
 
     private fun initUi() {
@@ -37,10 +49,6 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
         floatingChangeButton.setOnClickListener {
             showWaterDialog()
         }
-    }
-
-    private fun addWaterIntake() {
-        viewModel.addWaterIntake()
     }
 
     private fun initProgress() {
@@ -61,7 +69,14 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
     }
 
     private fun initWaterIntakesList() {
-        val waterIntakeAdapter = WaterIntakeAdapter()
+        val waterIntakeListener = object : WaterIntakeAdapter.Interaction {
+            override fun onItemSelected(position: Int, item: WaterIntake) {
+                viewModel.deleteWaterIntake(item)
+            }
+        }
+
+        val waterIntakeAdapter = WaterIntakeAdapter(waterIntakeListener)
+
         waterIntakesRecycler.apply {
             adapter = waterIntakeAdapter
         }
@@ -111,4 +126,50 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
     private fun showWaterDialog() {
         waterDialog.show()
     }
+
+    private fun addWaterIntake() {
+        viewModel.addWaterIntake()
+    }
+
+    private fun showCase() {
+
+        val showCaseDismiss = object : BubbleShowCaseListener {
+            override fun onTargetClick(bubbleShowCase: BubbleShowCase) {
+                bubbleShowCase.dismiss()
+            }
+            override fun onCloseActionImageClick(bubbleShowCase: BubbleShowCase) {
+                bubbleShowCase.dismiss()
+            }
+            override fun onBubbleClick(bubbleShowCase: BubbleShowCase) {
+                bubbleShowCase.dismiss()
+            }
+            override fun onBackgroundDimClick(bubbleShowCase: BubbleShowCase) {
+                bubbleShowCase.dismiss()
+            }
+        }
+
+        val amountShowcase = BubbleShowCaseBuilder(requireActivity())
+            .title("foo")
+            .targetView(floatingChangeButton)
+            .backgroundColor(resources.getColor(R.color.colorPrimary))
+            .disableCloseAction(true)
+            .description("bar")
+            .listener(showCaseDismiss)
+            .arrowPosition(BubbleShowCase.ArrowPosition.TOP)
+
+        val addShowcase = BubbleShowCaseBuilder(requireActivity())
+            .title("foo")
+            .disableCloseAction(true)
+            .targetView(floatingAddButton)
+            .backgroundColor(resources.getColor(R.color.colorPrimary))
+            .description("bar")
+            .listener(showCaseDismiss)
+            .arrowPosition(BubbleShowCase.ArrowPosition.TOP)
+
+        BubbleShowCaseSequence()
+            .addShowCase(amountShowcase)
+            .addShowCase(addShowcase)
+            .show()
+    }
+
 }

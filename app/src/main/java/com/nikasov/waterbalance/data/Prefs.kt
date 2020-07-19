@@ -11,48 +11,67 @@ import javax.inject.Inject
 class Prefs @Inject constructor (
     context: Context
 ) {
+
+    companion object {
+        const val CURRENT_WATER_INTAKE = "current_water_intake"
+        const val WATER_GOAL = "water_goal"
+        const val SEX = "sex"
+        const val WEIGHT = "weight"
+        const val IS_ONBOARDING_DONE = "is_onboarding_done"
+        const val AUTO_CALCULATION = "auto_calculation"
+        const val FIRST_RUN = "first_run"
+    }
+
     private val sharedPref = PreferenceManager.getDefaultSharedPreferences(context)
     private val editor = sharedPref.edit()
 
-    fun loadCurrentWaterIntake() = sharedPref.intLiveData(Constants.CURRENT_WATER_INTAKE, 200)
+    fun loadCurrentWaterIntake() = sharedPref.intLiveData(CURRENT_WATER_INTAKE, 300)
 
-    fun loadGoal() = sharedPref.stringLiveData(Constants.WATER_GOAL, "2500")
+    fun loadGoal() = sharedPref.stringLiveData(WATER_GOAL, "2500")
 
-    fun loadSex() = sharedPref.stringLiveData("sex", "male")
+    fun loadSex() = sharedPref.stringLiveData(SEX, "male")
 
-    fun loadWeight() = sharedPref.stringLiveData("weight", "60")
+    fun loadWeight() = sharedPref.stringLiveData(WEIGHT, "60")
 
-    fun isOnboardingDone() = sharedPref.booleanLiveData(Constants.IS_ONBOARDING_DONE, false)
+    fun isOnboardingDone() = sharedPref.booleanLiveData(IS_ONBOARDING_DONE, false)
 
-    fun isAutoCalculation() = sharedPref.booleanLiveData("auto_calculation", false)
+    fun isAutoCalculation() = sharedPref.booleanLiveData(AUTO_CALCULATION, false)
+
+    fun isFirstRun() = sharedPref.booleanLiveData(FIRST_RUN, true)
 
     fun saveCurrentWaterIntakeAmount (amount: Int) {
         editor.apply {
-            putInt(Constants.CURRENT_WATER_INTAKE, amount)
+            putInt(CURRENT_WATER_INTAKE, amount)
         }.apply()
     }
 
     fun saveSex (sex: String) {
         editor.apply {
-            putString("sex", sex)
+            putString(SEX, sex)
         }.apply()
     }
 
     fun saveWeight (weight: String) {
         editor.apply {
-            putString("weight", weight)
+            putString(WEIGHT, weight)
         }.apply()
     }
 
-    fun saveGoal (goal: String) {
+    private fun saveGoal (goal: String) {
         editor.apply {
-            putString(Constants.WATER_GOAL, goal)
+            putString(WATER_GOAL, goal)
         }.apply()
     }
 
     fun saveIsOnboardingDone() {
         editor.apply {
-            putBoolean(Constants.IS_ONBOARDING_DONE, true)
+            putBoolean(IS_ONBOARDING_DONE, true)
+        }.apply()
+    }
+
+    fun saveIsFirstRun() {
+        editor.apply {
+            putBoolean(FIRST_RUN, false)
         }.apply()
     }
 
@@ -60,7 +79,7 @@ class Prefs @Inject constructor (
         if (!isAutoCalculation().value!!) {
             calculateWaterAmount()
         } else {
-            saveGoal(sharedPref.getString(Constants.WATER_GOAL, amount)!!)
+            saveGoal(sharedPref.getString(WATER_GOAL, amount)!!)
         }
     }
 

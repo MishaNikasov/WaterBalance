@@ -2,10 +2,8 @@ package com.nikasov.waterbalance.ui.activity.main
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.view.View
 import androidx.activity.viewModels
 import androidx.navigation.fragment.findNavController
-import androidx.navigation.ui.setupWithNavController
 import com.nikasov.waterbalance.R
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.android.synthetic.main.activity_root.*
@@ -35,7 +33,7 @@ class RootActivity : AppCompatActivity() {
     }
 
     private fun checkIfOnboardingDone() {
-        if (viewModel.isOnboardingDone()) {
+        if (!viewModel.isOnboardingDone()) {
             hostFragment.findNavController().apply {
                 popBackStack()
                 navigate(R.id.to_onboardingFragment)

@@ -5,9 +5,10 @@ import androidx.lifecycle.LiveData
 
 abstract class SharedPreferenceLiveData<T>(
     val sharedPrefs: SharedPreferences,
-    val key: String,
-    val defValue: T
+    private val key: String,
+    private val defValue: T
 ) : LiveData<T>() {
+
     init {
         value = this.getValueFromPreferences(key, defValue)
     }

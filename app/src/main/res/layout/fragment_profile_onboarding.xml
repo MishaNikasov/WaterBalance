@@ -6,14 +6,15 @@
     android:layout_height="match_parent">
 
     <TextView
+        android:textSize="@dimen/text_big"
+        android:textStyle="bold"
+        android:textColor="@color/black"
         android:layout_marginTop="@dimen/big_margin"
         android:gravity="center"
         android:id="@+id/enterTxt"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:text="@string/enter_information"
-        android:textColor="@color/black"
-        android:textSize="@dimen/text_average"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintEnd_toStartOf="@+id/guideline2"
         app:layout_constraintStart_toStartOf="@+id/guideline" />
