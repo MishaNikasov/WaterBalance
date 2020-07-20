@@ -21,7 +21,7 @@ class HomeViewModel @ViewModelInject constructor (
 
     var currentProgress = 0
 
-    val waterIntakes: LiveData<List<WaterIntake>> = waterIntakesRepository.getWaterIntakesByDAte(getCurrentDay())
+    val waterIntakes: LiveData<List<WaterIntake>> = waterIntakesRepository.getWaterIntakesByDate(getCurrentDay())
 
     fun setCurrentProgress(list : List<WaterIntake>) {
         var progress = 0

@@ -14,9 +14,9 @@ interface WaterIntakeDAO {
     @Delete
     suspend fun deleteWaterIntake (waterIntake: WaterIntake)
     @Query("SELECT * FROM water_intake_table WHERE day = :date ORDER BY TIME")
-    fun getWaterIntakesByDAte(date : Date) : LiveData<List<WaterIntake>>
+    fun getWaterIntakesByDate(date : Date) : LiveData<List<WaterIntake>>
     @Query("SELECT * FROM water_intake_table WHERE day = :date ORDER BY TIME")
-    suspend fun getWaterIntakesListByDAte(date : Date) : List<WaterIntake>
+    suspend fun getWaterIntakesListByDate(date : Date) : List<WaterIntake>
     @Query("SELECT * FROM water_intake_table ORDER BY TIME")
     fun getAllWaterIntakes() : LiveData<List<WaterIntake>>
 }

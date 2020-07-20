@@ -16,11 +16,11 @@ class WaterIntakesRepository @Inject constructor (
         waterIntakeDAO.deleteWaterIntake(waterIntake)
     }
 
-    fun getWaterIntakesByDAte(date : Date) : LiveData<List<WaterIntake>> {
-        return waterIntakeDAO.getWaterIntakesByDAte(date)
+    fun getWaterIntakesByDate(date : Date) : LiveData<List<WaterIntake>> {
+        return waterIntakeDAO.getWaterIntakesByDate(date)
     }
-    suspend fun getWaterIntakesListByDAte(date : Date) : List<WaterIntake> {
-        return waterIntakeDAO.getWaterIntakesListByDAte(date)
+    suspend fun getWaterIntakesListByDate(date : Date) : List<WaterIntake> {
+        return waterIntakeDAO.getWaterIntakesListByDate(date)
     }
     fun getAllWaterIntakes() : LiveData<List<WaterIntake>> {
         return waterIntakeDAO.getAllWaterIntakes()
