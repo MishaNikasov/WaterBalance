@@ -5,6 +5,7 @@
         <item name="colorAccent">@color/colorAccent</item>
         <item name="android:windowAnimationStyle">@null</item>
         <item name="tabStyle">@style/TabLayout</item>
+        <item name="fontFamily">@font/acarisans</item>
     </style>
 
     <style name="ExtendedBtn" parent="Widget.MaterialComponents.ExtendedFloatingActionButton">

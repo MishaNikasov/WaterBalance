@@ -10,22 +10,27 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-        <TextView
-            android:layout_margin="@dimen/big_margin"
-            android:textSize="@dimen/text_big"
-            android:textColor="@color/black"
-            android:id="@+id/statTxt"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/statistic"
-            app:layout_constraintStart_toStartOf="parent"
+        <include
+            android:id="@+id/topDivider"
+            layout="@layout/divider"
             app:layout_constraintTop_toTopOf="parent" />
 
         <TextView
+            android:id="@+id/statTxt"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
             android:layout_margin="@dimen/big_margin"
+            android:text="@string/statistic"
+            android:textColor="@color/black"
+            android:textSize="@dimen/text_big"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/topDivider" />
+
+        <TextView
             android:id="@+id/dateTxt"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_margin="@dimen/big_margin"
             android:text="@string/statistic"
             android:textColor="@color/text_gray"
             app:layout_constraintBottom_toBottomOf="@+id/statTxt"
@@ -33,13 +38,22 @@
             app:layout_constraintTop_toTopOf="@+id/statTxt" />
 
         <com.github.mikephil.charting.charts.BarChart
-            android:layout_margin="@dimen/basic_margin"
             android:id="@+id/barChart"
             android:layout_width="0dp"
             android:layout_height="250dp"
+            android:layout_margin="@dimen/basic_margin"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/statTxt" />
+
+        <include
+            android:layout_marginTop="@dimen/basic_margin"
+            android:layout_width="match_parent"
+            android:layout_height="5dp"
+            android:id="@+id/middleDivider"
+            layout="@layout/divider"
+            app:layout_constraintTop_toBottomOf="@+id/barChart" />
+
     </androidx.constraintlayout.widget.ConstraintLayout>
 
 </androidx.core.widget.NestedScrollView>
