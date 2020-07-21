@@ -10,7 +10,6 @@ import com.nikasov.waterbalance.data.intake.WaterIntake
 import com.nikasov.waterbalance.data.repository.WaterIntakesRepository
 import com.nikasov.waterbalance.utils.DateUtils
 import kotlinx.coroutines.launch
-import timber.log.Timber
 import java.lang.StringBuilder
 import java.util.*
 
@@ -22,11 +21,24 @@ class StatisticViewModel @ViewModelInject constructor(
 
     val waterIntakes: LiveData<List<WaterIntake>> = waterIntakesRepository.getAllWaterIntakes()
 
-    val waterIntakesMapByDay: MutableLiveData<WaterIntakesMap> = MutableLiveData()
+    val waterIntakesMapByWeek: MutableLiveData<WaterIntakesMap> = MutableLiveData()
+    val waterIntakesMapByMonth: MutableLiveData<WaterIntakesMap> = MutableLiveData()
 
-    var dateRange = ""
-    var daysString = arrayListOf<String>()
-    var entryList = arrayListOf<BarEntry>()
+    //days stat
+    var weekDateRange = ""
+    var weekDaysString = arrayListOf<String>()
+    var weekEntryList = arrayListOf<BarEntry>()
+
+    //month stat
+    var monthText = ""
+    var monthDaysString = arrayListOf<String>()
+    var monthEntryList = arrayListOf<BarEntry>()
+
+    enum class StatState {
+        WEEK,
+        MONTH,
+        YEAR
+    }
 
     fun getAllWaterIntakesAmount(list : List<WaterIntake>) : Int {
         var intakesAmount = 0
@@ -36,7 +48,7 @@ class StatisticViewModel @ViewModelInject constructor(
         return intakesAmount
     }
 
-    private fun getDaysList() : List<Date> {
+    private fun getDaysList(state: StatState) : List<Date> {
 
         val listOfDays = arrayListOf<Date>()
 
@@ -45,60 +57,98 @@ class StatisticViewModel @ViewModelInject constructor(
 
         val daysStringArray = arrayListOf<String>()
 
-        var count : Int = cal.firstDayOfWeek
+        if (state == StatState.WEEK) {
+            var count = cal.firstDayOfWeek
 
-        for (i in 1..7) {
-            cal[Calendar.DAY_OF_WEEK] = count
-            listOfDays.apply {
-                add(cal.time)
+            for (i in 1..7) {
+                cal[Calendar.DAY_OF_WEEK] = count
+                listOfDays.apply {
+                    add(cal.time)
+                }
+                daysStringArray.add(DateUtils.getDay(cal.time))
+                count++
             }
-            daysStringArray.add(DateUtils.getDay(cal.time))
-            count++
+
+            weekDaysString = daysStringArray
+
+        } else if (state == StatState.MONTH) {
+            var count = 1
+
+            for (i in 1..cal.getActualMaximum(Calendar.DAY_OF_MONTH)) {
+                cal[Calendar.DAY_OF_MONTH] = count
+                listOfDays.apply {
+                    add(cal.time)
+                }
+                daysStringArray.add(DateUtils.getFormattedDay(cal.time))
+                count++
+            }
+
+            monthDaysString = daysStringArray
         }
-
-        daysString = daysStringArray
-
         return listOfDays
     }
 
-    fun getStatByDays() {
+    fun getStatByDays(state: StatState) {
         viewModelScope.launch {
-            val listOfWaterIntakesByDay = hashMapOf<Date, String>()
-            getDaysList().forEach { date ->
+
+            val daysList = getDaysList(state)
+            val mapOfWaterIntakesByDay = hashMapOf<Date, String>()
+
+            daysList.forEach { date ->
                 var sum = 0
                 waterIntakesRepository.getWaterIntakesListByDate(date).forEach {
                     sum += it.amount
                 }
-                listOfWaterIntakesByDay[date] = "$sum"
+                mapOfWaterIntakesByDay[date] = "$sum"
             }
-            val result = listOfWaterIntakesByDay.toList().sortedBy {
+
+            val result = mapOfWaterIntakesByDay.toList().sortedBy {
                     (key, _) -> key
             }.toMap()
 
-            setDateRange(result.keys.toList())
-            setEntryList(result.values.toList())
+            setStatTitle(result.keys.toList(), state)
+            setEntryList(result.values.toList(), state)
 
-            waterIntakesMapByDay.postValue(result)
+            if (state == StatState.WEEK) {
+                waterIntakesMapByWeek.postValue(result)
+            }  else if (state == StatState.MONTH) {
+                waterIntakesMapByMonth.postValue(result)
+            }
         }
     }
 
-    private fun setEntryList(valuesList: List<String>) {
-        entryList.clear()
+    private fun setEntryList(valuesList: List<String>, state: StatState) {
+
         val list = arrayListOf<BarEntry>()
         var i = 0f
+
         valuesList.forEach {
             list.add(BarEntry(i, it.toFloat()))
             i++
         }
-        entryList = list
+
+        if (state == StatState.WEEK) {
+            weekEntryList.clear()
+            weekEntryList = list
+        } else if (state == StatState.MONTH) {
+            monthEntryList.clear()
+            monthEntryList = list
+        }
     }
 
-    private fun setDateRange(list: List<Date>) {
-        val dateRangeStr = StringBuilder()
-        dateRangeStr.append(DateUtils.getFormattedDay(list[0]))
-        dateRangeStr.append(" - ")
-        dateRangeStr.append(DateUtils.getFormattedDay(list[list.size - 1]))
-        dateRange = dateRangeStr.toString()
+    private fun setStatTitle(list: List<Date>, state: StatState) {
+
+        val statTitle = StringBuilder()
+
+        if (state == StatState.WEEK) {
+            statTitle.append(DateUtils.getFormattedDay(list[0]))
+            statTitle.append(" - ")
+            statTitle.append(DateUtils.getFormattedDay(list[list.size - 1]))
+            weekDateRange = statTitle.toString()
+        } else if (state == StatState.MONTH) {
+            statTitle.append(DateUtils.getMonth(list[0]))
+            monthText = statTitle.toString()
+        }
     }
 
 }

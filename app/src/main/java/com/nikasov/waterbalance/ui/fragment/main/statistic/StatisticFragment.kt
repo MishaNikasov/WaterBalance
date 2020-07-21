@@ -6,6 +6,7 @@ import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
+import com.github.mikephil.charting.charts.BarChart
 import com.github.mikephil.charting.components.XAxis
 import com.github.mikephil.charting.data.BarData
 import com.github.mikephil.charting.data.BarDataSet
@@ -24,64 +25,88 @@ class StatisticFragment : Fragment(R.layout.fragment_statistic) {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        initChart()
+        initChart(weekBarChart)
+        initChart(monthBarChart)
         initStat()
     }
 
     private fun initStat() {
         viewModel.waterIntakes.observe(viewLifecycleOwner, Observer {
-            viewModel.getStatByDays()
+            viewModel.getStatByDays(StatisticViewModel.StatState.MONTH)
+            viewModel.getStatByDays(StatisticViewModel.StatState.WEEK)
         })
-        viewModel.waterIntakesMapByDay.observe(viewLifecycleOwner, Observer { intakesMap ->
+        viewModel.waterIntakesMapByWeek.observe(viewLifecycleOwner, Observer { intakesMap ->
+            updateUi()
+        })
+        viewModel.waterIntakesMapByMonth.observe(viewLifecycleOwner, Observer { intakesMap ->
             updateUi()
         })
     }
 
     private fun updateUi() {
-        updateLineChart()
-        dateTxt.text = viewModel.dateRange
+        updateWeekChart()
+        updateMonthChart()
     }
 
-    private fun updateLineChart() {
+    private fun updateMonthChart() {
+        monthTitle.text = viewModel.monthText
 
-        val barDataSet = BarDataSet(viewModel.entryList, "Water intakes")
+        val barDataSet = BarDataSet(viewModel.monthEntryList, "Water intakes by month")
         barDataSet.valueTextColor = android.R.color.transparent
         barDataSet.color = ContextCompat.getColor(requireContext(), R.color.colorPrimary)
 
         val iBarDataSet = arrayListOf<IBarDataSet>()
         iBarDataSet.add(barDataSet)
 
-        val xAxisLabel = viewModel.daysString
-        barChart.xAxis.valueFormatter = IndexAxisValueFormatter(xAxisLabel)
+        val xAxisLabel = viewModel.monthDaysString
+        monthBarChart.xAxis.valueFormatter = IndexAxisValueFormatter(xAxisLabel)
 
-        barChart.data = BarData(iBarDataSet)
-        barChart.invalidate()
+        monthBarChart.data = BarData(iBarDataSet)
+        monthBarChart.invalidate()
     }
 
-    private fun initChart() {
+    private fun updateWeekChart() {
+
+        weekTitle.text = viewModel.weekDateRange
+
+        val barDataSet = BarDataSet(viewModel.weekEntryList, "Water intakes by week")
+        barDataSet.valueTextColor = android.R.color.transparent
+        barDataSet.color = ContextCompat.getColor(requireContext(), R.color.colorPrimary)
+
+        val iBarDataSet = arrayListOf<IBarDataSet>()
+        iBarDataSet.add(barDataSet)
+
+        val xAxisLabel = viewModel.weekDaysString
+        weekBarChart.xAxis.valueFormatter = IndexAxisValueFormatter(xAxisLabel)
+
+        weekBarChart.data = BarData(iBarDataSet)
+        weekBarChart.invalidate()
+    }
+
+    private fun initChart(chart: BarChart) {
 
         val mv = CustomMarkerView(requireContext(), R.layout.chart_marker_view)
 
-        val xAxis = barChart.xAxis
+        val xAxis = chart.xAxis
         xAxis.position = XAxis.XAxisPosition.BOTTOM
         xAxis.setDrawAxisLine(false)
         xAxis.setDrawGridLines(false)
 
-        barChart.setFitBars(true)
-        barChart.animateY(1000)
+        chart.setFitBars(true)
+        chart.animateY(1000)
 
-        barChart.axisRight.setDrawLabels(false)
-        barChart.legend.isEnabled = false
-        barChart.description.isEnabled = false
-        barChart.setDrawGridBackground(false)
+        chart.axisRight.setDrawLabels(false)
+        chart.legend.isEnabled = false
+        chart.description.isEnabled = false
+        chart.setDrawGridBackground(false)
 
-        barChart.isDragEnabled = false
-        barChart.setScaleEnabled(false)
-        barChart.setPinchZoom(false)
-        barChart.isAutoScaleMinMaxEnabled = false
+        chart.isDragEnabled = false
+        chart.setScaleEnabled(false)
+        chart.setPinchZoom(false)
+        chart.isAutoScaleMinMaxEnabled = false
 
-        barChart.isHighlightPerTapEnabled = true
+        chart.isHighlightPerTapEnabled = true
 
-        barChart.marker = mv
+        chart.marker = mv
     }
 }

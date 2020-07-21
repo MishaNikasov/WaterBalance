@@ -15,6 +15,11 @@ object DateUtils {
         return formatter.format(date)
     }
 
+    fun getMonth(date: Date): String {
+        val formatter = SimpleDateFormat("MMM", Locale.getDefault())
+        return formatter.format(date)
+    }
+
     fun getDay(date: Date): String {
         val formatter = SimpleDateFormat("EEE", Locale.getDefault())
         return formatter.format(date)
