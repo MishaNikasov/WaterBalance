@@ -16,12 +16,13 @@
             app:layout_constraintTop_toTopOf="parent" />
 
         <TextView
+            style="@style/TextViewBold"
             android:id="@+id/weekTxt"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_margin="@dimen/big_margin"
             android:text="@string/week"
-            android:textColor="@color/black"
+            android:textColor="@color/colorPrimaryDark"
             android:textSize="@dimen/text_big"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/topDivider" />
@@ -40,7 +41,7 @@
         <com.github.mikephil.charting.charts.BarChart
             android:id="@+id/weekBarChart"
             android:layout_width="0dp"
-            android:layout_height="220dp"
+            android:layout_height="200dp"
             android:layout_margin="@dimen/basic_margin"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -55,12 +56,13 @@
             app:layout_constraintTop_toBottomOf="@+id/weekBarChart" />
 
         <TextView
+            style="@style/TextViewBold"
             android:id="@+id/monthTxt"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_margin="@dimen/big_margin"
             android:text="@string/month"
-            android:textColor="@color/black"
+            android:textColor="@color/colorPrimaryDark"
             android:textSize="@dimen/text_big"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/middleDivider" />
@@ -79,7 +81,7 @@
         <com.github.mikephil.charting.charts.BarChart
             android:id="@+id/monthBarChart"
             android:layout_width="0dp"
-            android:layout_height="220dp"
+            android:layout_height="200dp"
             android:layout_margin="@dimen/basic_margin"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -94,15 +96,107 @@
             app:layout_constraintTop_toBottomOf="@+id/monthBarChart" />
 
         <TextView
+            style="@style/TextViewBold"
             android:id="@+id/statTxt"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_margin="@dimen/big_margin"
             android:text="@string/statistic"
-            android:textColor="@color/black"
+            android:textColor="@color/colorPrimaryDark"
             android:textSize="@dimen/text_big"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/middleDivider2" />
+
+        <LinearLayout
+            android:fontFamily="@font/acarisansbold"
+            android:layout_marginTop="@dimen/big_margin"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            app:layout_constraintEnd_toEndOf="@+id/monthTitle"
+            app:layout_constraintStart_toStartOf="@+id/statTxt"
+            app:layout_constraintTop_toBottomOf="@+id/statTxt">
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:orientation="vertical">
+
+                <TextView
+                    style="@style/TextViewBold"
+                    android:id="@+id/allWaterIntakesAmount"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/statistic"
+                    android:textColor="@color/black"
+                    android:textSize="@dimen/text_big" />
+
+                <TextView
+                    android:textColor="@color/text_gray"
+                    android:textSize="@dimen/text_small"
+                    android:id="@+id/allWaterIntakesAmountTitle"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:text="All water\nintakes amount" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:orientation="vertical">
+
+                <TextView
+                    style="@style/TextViewBold"
+                    android:id="@+id/avgWaterIntakesAmountByDay"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/statistic"
+                    android:textColor="@color/black"
+                    android:textSize="@dimen/text_big" />
+
+                <TextView
+                    android:textColor="@color/text_gray"
+                    android:textSize="@dimen/text_small"
+                    android:id="@+id/avgWaterIntakesAmountByDayTitle"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:text="Avg water intakes amount by day" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:orientation="vertical">
+
+                <TextView
+                    style="@style/TextViewBold"
+                    android:id="@+id/avgWaterIntakesCountByDay"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/statistic"
+                    android:textColor="@color/black"
+                    android:textSize="@dimen/text_big" />
+
+                <TextView
+                    android:textColor="@color/text_gray"
+                    android:textSize="@dimen/text_small"
+                    android:id="@+id/avgWaterIntakesCountByDayTitle"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:text="Avg water intakes\ncount by day"/>
+            </LinearLayout>
+
+        </LinearLayout>
+
+
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

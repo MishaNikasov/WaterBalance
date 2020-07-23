@@ -21,7 +21,7 @@ import kotlinx.android.synthetic.main.fragment_statistic.*
 class StatisticFragment : Fragment(R.layout.fragment_statistic) {
 
     private val viewModel : StatisticViewModel by viewModels()
-//todo: сделать ачивменты сколько выпил, стат по месяцу году
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
@@ -46,6 +46,13 @@ class StatisticFragment : Fragment(R.layout.fragment_statistic) {
     private fun updateUi() {
         updateWeekChart()
         updateMonthChart()
+        updateAllStat()
+    }
+
+    private fun updateAllStat() {
+        allWaterIntakesAmount.text = viewModel.allWaterIntakesAmount
+        avgWaterIntakesAmountByDay.text = viewModel.avgWaterIntakesAmountByDay
+        avgWaterIntakesCountByDay.text = viewModel.avgWaterIntakesCountByDay
     }
 
     private fun updateMonthChart() {

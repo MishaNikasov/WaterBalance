@@ -12,8 +12,9 @@ import com.nikasov.waterbalance.utils.DateUtils
 import kotlinx.coroutines.launch
 import java.lang.StringBuilder
 import java.util.*
+import kotlin.collections.ArrayList
 
-typealias WaterIntakesMap = Map<Date, String>
+typealias WaterIntakesMap = Map<Date, List<WaterIntake>>
 
 class StatisticViewModel @ViewModelInject constructor(
     private val waterIntakesRepository: WaterIntakesRepository
@@ -21,8 +22,8 @@ class StatisticViewModel @ViewModelInject constructor(
 
     val waterIntakes: LiveData<List<WaterIntake>> = waterIntakesRepository.getAllWaterIntakes()
 
-    val waterIntakesMapByWeek: MutableLiveData<WaterIntakesMap> = MutableLiveData()
-    val waterIntakesMapByMonth: MutableLiveData<WaterIntakesMap> = MutableLiveData()
+    val waterIntakesMapByWeek: MutableLiveData<Map<Date, String>> = MutableLiveData()
+    val waterIntakesMapByMonth: MutableLiveData<Map<Date, String>> = MutableLiveData()
 
     //days stat
     var weekDateRange = ""
@@ -34,18 +35,76 @@ class StatisticViewModel @ViewModelInject constructor(
     var monthDaysString = arrayListOf<String>()
     var monthEntryList = arrayListOf<BarEntry>()
 
+    //all stats
+    var allWaterIntakesAmount = ""
+    var avgWaterIntakesAmountByDay = ""
+    var avgWaterIntakesCountByDay =  ""
+
     enum class StatState {
         WEEK,
-        MONTH,
-        YEAR
+        MONTH
     }
 
-    fun getAllWaterIntakesAmount(list : List<WaterIntake>) : Int {
+    private fun getAllStat(list : WaterIntakesMap) {
+
         var intakesAmount = 0
-        list.forEach { intake ->
-            intakesAmount += intake.amount
+        var allIntakesCount =  0
+        var allDaysCount = 0
+
+        list.values.onEach { intakeList ->
+            if (intakeList.isNotEmpty()) {
+
+                allDaysCount++
+
+                intakeList.onEach { intake ->
+                    allIntakesCount++
+                    intakesAmount += intake.amount
+                }
+            }
         }
-        return intakesAmount
+
+        val avgWaterIntakesAmount = intakesAmount/allDaysCount
+        val avgWaterIntakesCount = allIntakesCount/allDaysCount
+
+        allWaterIntakesAmount = "${intakesAmount/1000f} l"
+        avgWaterIntakesAmountByDay = "${avgWaterIntakesAmount/1000f} l"
+        avgWaterIntakesCountByDay = "$avgWaterIntakesCount"
+
+    }
+
+    fun getStatByDays(state: StatState) {
+        viewModelScope.launch {
+
+            val daysList = getDaysList(state)
+            val mapOfWaterIntakesByDay = hashMapOf<Date, String>()
+            val mapOfWaterIntakes = hashMapOf<Date, List<WaterIntake>>()
+
+            daysList.forEach { date ->
+                var sum = 0
+                val waterIntakeList : ArrayList<WaterIntake> = arrayListOf()
+                waterIntakesRepository.getWaterIntakesListByDate(date).forEach {
+                    sum += it.amount
+                    waterIntakeList.add(it)
+                }
+                mapOfWaterIntakes[date] = waterIntakeList
+                mapOfWaterIntakesByDay[date] = "$sum"
+            }
+
+            val result = mapOfWaterIntakesByDay.toList().sortedBy {
+                    (key, _) -> key
+            }.toMap()
+
+            setStatTitle(result.keys.toList(), state)
+            setEntryList(result.values.toList(), state)
+
+            getAllStat(mapOfWaterIntakes)
+
+            if (state == StatState.WEEK) {
+                waterIntakesMapByWeek.postValue(result)
+            }  else if (state == StatState.MONTH) {
+                waterIntakesMapByMonth.postValue(result)
+            }
+        }
     }
 
     private fun getDaysList(state: StatState) : List<Date> {
@@ -86,35 +145,6 @@ class StatisticViewModel @ViewModelInject constructor(
             monthDaysString = daysStringArray
         }
         return listOfDays
-    }
-
-    fun getStatByDays(state: StatState) {
-        viewModelScope.launch {
-
-            val daysList = getDaysList(state)
-            val mapOfWaterIntakesByDay = hashMapOf<Date, String>()
-
-            daysList.forEach { date ->
-                var sum = 0
-                waterIntakesRepository.getWaterIntakesListByDate(date).forEach {
-                    sum += it.amount
-                }
-                mapOfWaterIntakesByDay[date] = "$sum"
-            }
-
-            val result = mapOfWaterIntakesByDay.toList().sortedBy {
-                    (key, _) -> key
-            }.toMap()
-
-            setStatTitle(result.keys.toList(), state)
-            setEntryList(result.values.toList(), state)
-
-            if (state == StatState.WEEK) {
-                waterIntakesMapByWeek.postValue(result)
-            }  else if (state == StatState.MONTH) {
-                waterIntakesMapByMonth.postValue(result)
-            }
-        }
     }
 
     private fun setEntryList(valuesList: List<String>, state: StatState) {
