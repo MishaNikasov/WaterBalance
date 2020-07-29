@@ -1,5 +1,6 @@
 package com.nikasov.waterbalance.ui.fragment.main.home
 
+import android.content.Intent
 import android.os.Bundle
 import android.view.View
 import androidx.fragment.app.Fragment
@@ -11,7 +12,9 @@ import com.elconfidencial.bubbleshowcase.BubbleShowCaseListener
 import com.elconfidencial.bubbleshowcase.BubbleShowCaseSequence
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.nikasov.waterbalance.R
+import com.nikasov.waterbalance.common.Constants
 import com.nikasov.waterbalance.data.intake.WaterIntake
+import com.nikasov.waterbalance.services.WaterCountService
 import com.nikasov.waterbalance.ui.adapter.WaterIntakeAdapter
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.android.synthetic.main.fragment_home.*
@@ -38,12 +41,15 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
 
     private fun initUi() {
 
+        sendCommandToService(Constants.ACTION_START_OR_RESUME_SERVICE)
+
         initProgress()
         initWaterIntakesList()
         initWaterDialog()
 
         floatingAddButton.setOnClickListener {
             addWaterIntake()
+            updateNotification()
         }
 
         floatingChangeButton.setOnClickListener {
@@ -117,6 +123,16 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
                     3 -> viewModel.saveCurrentIntake(600)
                 }
             }
+    }
+
+    private fun sendCommandToService(action: String) =
+        Intent(requireContext(), WaterCountService::class.java).also {
+            it.action = action
+            requireContext().startService(it)
+        }
+
+    private fun updateNotification() {
+        WaterCountService.curAmount.postValue("123444")
     }
 
     private fun showWaterDialog() {

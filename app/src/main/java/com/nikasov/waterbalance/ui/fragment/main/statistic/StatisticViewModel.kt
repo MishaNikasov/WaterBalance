@@ -63,13 +63,14 @@ class StatisticViewModel @ViewModelInject constructor(
             }
         }
 
-        val avgWaterIntakesAmount = intakesAmount/allDaysCount
-        val avgWaterIntakesCount = allIntakesCount/allDaysCount
+        if (allDaysCount > 0) {
+            val avgWaterIntakesAmount = intakesAmount/allDaysCount
+            val avgWaterIntakesCount = allIntakesCount/allDaysCount
 
-        allWaterIntakesAmount = "${intakesAmount/1000f} l"
-        avgWaterIntakesAmountByDay = "${avgWaterIntakesAmount/1000f} l"
-        avgWaterIntakesCountByDay = "$avgWaterIntakesCount"
-
+            allWaterIntakesAmount = "${intakesAmount/1000f} l"
+            avgWaterIntakesAmountByDay = "${avgWaterIntakesAmount/1000f} l"
+            avgWaterIntakesCountByDay = "$avgWaterIntakesCount"
+        }
     }
 
     fun getStatByDays(state: StatState) {
